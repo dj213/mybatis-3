@@ -40,6 +40,9 @@ public class XMLStatementBuilder extends BaseBuilder {
 
   private MapperBuilderAssistant builderAssistant;
   private XNode context;
+  //记录映射文件databaseIdProvider元素配置的DatabaseIdProvider类获取到的databaseId
+  //这个值用来和select|update|delete|insert元素的属性databaseId值进行比较:MyBatis会加载所有的不带 databaseId或匹配当前 databaseId的语句；如果带或者不带的语句都有，则不带的会被忽略
+  //也就是说我们我们写的select|update|delete|insert是通用的，则可以不配置databaseId属性；如果不是通用的，则需要配置databaseId属性以限定适用于哪个数据库。
   private String requiredDatabaseId;
 
   public XMLStatementBuilder(Configuration configuration, MapperBuilderAssistant builderAssistant, XNode context) {
@@ -53,6 +56,12 @@ public class XMLStatementBuilder extends BaseBuilder {
     this.requiredDatabaseId = databaseId;
   }
 
+  /**
+   * 解析select|insert|update|delete元素
+   * @Description: TODO
+   * @author: jie.deng
+   * @time: 2017年2月26日 下午5:04:23
+   */
   public void parseStatementNode() {
     String id = context.getStringAttribute("id");
     String databaseId = context.getStringAttribute("databaseId");
@@ -170,6 +179,12 @@ public class XMLStatementBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 如果配置了 databaseIdProvider，MyBatis 会加载所有的不带 databaseId 或匹配当前 databaseId 的语句；如果带或者不带的语句都有，则不带的会被忽略。
+   * @Description: TODO
+   * @author: jie.deng
+   * @time: 2017年2月26日 下午4:59:18
+   */
   private boolean databaseIdMatchesCurrent(String id, String databaseId, String requiredDatabaseId) {
     if (requiredDatabaseId != null) {
       if (!requiredDatabaseId.equals(databaseId)) {

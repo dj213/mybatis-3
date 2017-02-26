@@ -54,7 +54,10 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   private XPathParser parser;
   private MapperBuilderAssistant builderAssistant;
-  private Map<String, XNode> sqlFragments;
+  
+  //存放映射文件中的sql元素(<sql id=""></sql>)，key为【namespace + "." + id】,
+  private Map<String, XNode> sqlFragments;	
+  //存放映射文件中的路径(相对于类路径)
   private String resource;
 
   @Deprecated
@@ -87,8 +90,15 @@ public class XMLMapperBuilder extends BaseBuilder {
     this.resource = resource;
   }
 
+  /**
+   * 解析映射文件
+   * @Description: TODO
+   * @author: jie.deng
+   * @time: 2017年2月26日 下午5:06:17
+   */
   public void parse() {
     if (!configuration.isResourceLoaded(resource)) {
+      //解析映射文件
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
       bindMapperForNamespace();
@@ -113,8 +123,8 @@ public class XMLMapperBuilder extends BaseBuilder {
       cacheRefElement(context.evalNode("cache-ref"));
       cacheElement(context.evalNode("cache"));
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
-      resultMapElements(context.evalNodes("/mapper/resultMap"));
-      sqlElement(context.evalNodes("/mapper/sql"));
+      resultMapElements(context.evalNodes("/mapper/resultMap"));	//解析resultMap元素
+      sqlElement(context.evalNodes("/mapper/sql"));					//解析sql元素
       buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing Mapper XML. Cause: " + e, e);
