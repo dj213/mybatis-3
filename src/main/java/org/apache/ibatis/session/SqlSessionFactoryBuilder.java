@@ -87,7 +87,13 @@ public class SqlSessionFactoryBuilder {
       }
     }
   }
-    
+  
+  /**
+   * 创建SqlSessionFactory
+   * @Description: 本类中的其他方法都是调用本方法来创建SqlSessionFactory
+   * @author: jie.deng
+   * @time: 2017年2月26日 下午2:06:31
+   */
   public SqlSessionFactory build(Configuration config) {
     return new DefaultSqlSessionFactory(config);
   }

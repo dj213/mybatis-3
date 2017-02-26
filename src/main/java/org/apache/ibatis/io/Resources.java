@@ -30,6 +30,11 @@ import java.util.Properties;
  *
  * @author Clinton Begin
  */
+/**
+ * @Description: 工具类
+ * @author: jie.deng
+ * @time: 2017年2月26日 下午1:31:57
+ */
 public class Resources {
 
   private static ClassLoaderWrapper classLoaderWrapper = new ClassLoaderWrapper();
