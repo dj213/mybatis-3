@@ -52,9 +52,11 @@ import org.apache.ibatis.type.JdbcType;
  */
 public class XMLConfigBuilder extends BaseBuilder {
 
-  private boolean parsed;
+  //用于保证同一个XMLConfigBuilder对象只加载配置文件一次
+  private boolean parsed;	
   private XPathParser parser;
-  private String environment;
+  //记录配置文件environments元素的属性default的值，用于和environment元素的属性id的值进行比较，以选取需要的环境配置
+  private String environment;	//
   private ReflectorFactory localReflectorFactory = new DefaultReflectorFactory();
 
   public XMLConfigBuilder(Reader reader) {
@@ -90,6 +92,12 @@ public class XMLConfigBuilder extends BaseBuilder {
     this.parser = parser;
   }
 
+  /**
+   * 开始解析配置文件
+   * @Description: TODO
+   * @author: jie.deng
+   * @time: 2017年2月26日 下午4:33:14
+   */
   public Configuration parse() {
     if (parsed) {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
@@ -102,10 +110,13 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
+      //properties元素下是自定义变量和值？
       propertiesElement(root.evalNode("properties"));
-      Properties settings = settingsAsProperties(root.evalNode("settings"));
+      //检查settings元素下每一个setting的name是否在Configuration中有setter方法，如果全部都有则检查通过，返回Properties
+      //settings元素下是内置变量和可选的枚举值？
+      Properties settings = settingsAsProperties(root.evalNode("settings"));	
       loadCustomVfs(settings);
-      typeAliasesElement(root.evalNode("typeAliases"));
+      typeAliasesElement(root.evalNode("typeAliases"));	//配置文件和映射文件都有别名
       pluginElement(root.evalNode("plugins"));
       objectFactoryElement(root.evalNode("objectFactory"));
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
@@ -114,7 +125,7 @@ public class XMLConfigBuilder extends BaseBuilder {
       // read it after objectFactory and objectWrapperFactory issue #631
       environmentsElement(root.evalNode("environments"));
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
-      typeHandlerElement(root.evalNode("typeHandlers"));
+      typeHandlerElement(root.evalNode("typeHandlers"));//配置文件和映射文件都有类型处理器
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
