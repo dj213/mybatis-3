@@ -24,6 +24,10 @@ import org.apache.ibatis.session.ResultHandler;
 				type= StatementHandler.class,
 				method = "parameterize",
 				args = {Statement.class}),
+		@Signature(
+				type= StatementHandler.class,
+				method = "update",
+				args = {Statement.class}),
 })
 public class StatementHandlerPlugin implements Interceptor {
 
