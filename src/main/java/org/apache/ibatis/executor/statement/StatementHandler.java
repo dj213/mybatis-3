@@ -30,18 +30,42 @@ import org.apache.ibatis.session.ResultHandler;
  */
 public interface StatementHandler {
 
+  /**
+   * a.prepare 根据配置获取Statement
+   * @Description: TODO
+   * @author: jie.deng
+   * @time: 2017年3月5日 下午2:51:48
+   */
   Statement prepare(Connection connection, Integer transactionTimeout)
       throws SQLException;
 
+  /**
+   * b.parameterize 入参绑定
+   * @Description: TODO
+   * @author: jie.deng
+   * @time: 2017年3月5日 下午2:52:18
+   */
   void parameterize(Statement statement)
       throws SQLException;
 
   void batch(Statement statement)
       throws SQLException;
 
+  /**
+   * c.update
+   * @Description: TODO
+   * @author: jie.deng
+   * @time: 2017年3月5日 下午3:02:21
+   */
   int update(Statement statement)
       throws SQLException;
 
+  /**
+   * c.query
+   * @Description: TODO
+   * @author: jie.deng
+   * @time: 2017年3月5日 下午3:02:52
+   */
   <E> List<E> query(Statement statement, ResultHandler resultHandler)
       throws SQLException;
 

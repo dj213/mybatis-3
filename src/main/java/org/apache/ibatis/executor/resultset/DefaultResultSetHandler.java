@@ -15,6 +15,19 @@
  */
 package org.apache.ibatis.executor.resultset;
 
+import java.lang.reflect.Constructor;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.ibatis.annotations.AutomapConstructor;
 import org.apache.ibatis.binding.MapperMethod.ParamMap;
 import org.apache.ibatis.cache.CacheKey;
@@ -47,19 +60,6 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
-
-import java.lang.reflect.Constructor;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Clinton Begin
@@ -385,6 +385,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
   private Object getRowValue(ResultSetWrapper rsw, ResultMap resultMap) throws SQLException {
     final ResultLoaderMap lazyLoader = new ResultLoaderMap();
+    //createResultObject
     Object rowValue = createResultObject(rsw, resultMap, lazyLoader, null);
     if (rowValue != null && !hasTypeHandlerForResultObject(rsw, resultMap.getType())) {
       final MetaObject metaObject = configuration.newMetaObject(rowValue);
@@ -685,8 +686,12 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
   private boolean allowedConstructor(final Constructor<?> constructor, final List<String> classNames) {
     final Class<?>[] parameterTypes = constructor.getParameterTypes();
-    if (typeNames(parameterTypes).equals(classNames)) return true;
-    if (parameterTypes.length != classNames.size()) return false;
+    if (typeNames(parameterTypes).equals(classNames)) {
+		return true;
+	}
+    if (parameterTypes.length != classNames.size()) {
+		return false;
+	}
     for (int i = 0; i < parameterTypes.length; i++) {
       final Class<?> parameterType = parameterTypes[i];
       if (parameterType.isPrimitive() && !primitiveTypes.getWrapper(parameterType).getName().equals(classNames.get(i))) {

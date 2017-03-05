@@ -32,10 +32,27 @@ import org.apache.ibatis.session.RowBounds;
 /**
  * @author Clinton Begin
  */
+/**
+ * 代理模式
+ * @Description: TODO
+ * @author: jie.deng
+ * @time: 2017年3月5日 下午3:49:13
+ */
 public class RoutingStatementHandler implements StatementHandler {
 
   private final StatementHandler delegate;
 
+  /**
+   * 通过代理类的构造函数，完成被代理对象的选择
+   * @param executor
+   * @param ms
+   * @param parameter
+   * @param rowBounds
+   * @param resultHandler
+   * @param boundSql
+   * @author: jie.deng
+   * @time: 2017年3月5日 下午3:50:19
+   */
   public RoutingStatementHandler(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
 
     switch (ms.getStatementType()) {

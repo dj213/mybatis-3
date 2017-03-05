@@ -36,6 +36,14 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 /**
  * @author Clinton Begin
  */
+/**
+ * 模板方法模式
+ * prepare是模板方法，
+ * instantiateStatement 是需要子类实现的抽象方法
+ * @Description: TODO
+ * @author: jie.deng
+ * @time: 2017年3月5日 下午3:53:24
+ */
 public abstract class BaseStatementHandler implements StatementHandler {
 
   protected final Configuration configuration;
@@ -80,6 +88,10 @@ public abstract class BaseStatementHandler implements StatementHandler {
     return parameterHandler;
   }
 
+  /**
+   * 模板方法模式
+   * prepare()是模板方法，子类只需要实现其中的一个步骤instantiateStatement()
+   */
   @Override
   public Statement prepare(Connection connection, Integer transactionTimeout) throws SQLException {
     ErrorContext.instance().sql(boundSql.getSql());
