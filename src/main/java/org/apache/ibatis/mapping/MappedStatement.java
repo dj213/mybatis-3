@@ -35,9 +35,11 @@ public final class MappedStatement {
 
   private String resource;
   private Configuration configuration;
+  //对应属性id
   private String id;
   private Integer fetchSize;
   private Integer timeout;
+  //对应属性statementType
   private StatementType statementType;
   private ResultSetType resultSetType;
   private SqlSource sqlSource;
@@ -52,6 +54,7 @@ public final class MappedStatement {
   private String[] keyProperties;
   private String[] keyColumns;
   private boolean hasNestedResultMaps;
+  //对应属性databaseId
   private String databaseId;
   private Log statementLog;
   private LanguageDriver lang;
@@ -179,7 +182,7 @@ public final class MappedStatement {
       mappedStatement.resultSets = delimitedStringToArray(resultSet);
       return this;
     }
-    
+
     public MappedStatement build() {
       assert mappedStatement.configuration != null;
       assert mappedStatement.id != null;
@@ -287,7 +290,7 @@ public final class MappedStatement {
   public String[] getResulSets() {
     return resultSets;
   }
-  
+
   public BoundSql getBoundSql(Object parameterObject) {
     BoundSql boundSql = sqlSource.getBoundSql(parameterObject);
     List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();

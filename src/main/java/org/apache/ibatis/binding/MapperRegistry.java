@@ -15,16 +15,16 @@
  */
 package org.apache.ibatis.binding;
 
-import org.apache.ibatis.builder.annotation.MapperAnnotationBuilder;
-import org.apache.ibatis.io.ResolverUtil;
-import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.SqlSession;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.ibatis.builder.annotation.MapperAnnotationBuilder;
+import org.apache.ibatis.io.ResolverUtil;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
 
 /**
  * @author Clinton Begin
@@ -34,6 +34,7 @@ import java.util.Set;
 public class MapperRegistry {
 
   private final Configuration config;
+  //key为mapper接口的完全限定名
   private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<Class<?>, MapperProxyFactory<?>>();
 
   public MapperRegistry(Configuration config) {
@@ -52,7 +53,7 @@ public class MapperRegistry {
       throw new BindingException("Error getting mapper instance. Cause: " + e, e);
     }
   }
-  
+
   public <T> boolean hasMapper(Class<T> type) {
     return knownMappers.containsKey(type);
   }
@@ -104,5 +105,5 @@ public class MapperRegistry {
   public void addMappers(String packageName) {
     addMappers(packageName, Object.class);
   }
-  
+
 }
