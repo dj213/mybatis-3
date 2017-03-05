@@ -21,7 +21,15 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-
+<!-- 
+	<plugins>
+		<plugin interceptor="com.demo.plugins.ExecutorPlugin"/>
+		<plugin interceptor="com.demo.plugins.StatementHandlerPlugin"/>
+		<plugin interceptor="com.demo.plugins.ParameterHandlerPlugin"/>
+		<plugin interceptor="com.demo.plugins.ResultSetHandlerPlugin"/>
+	</plugins>
+ -->	
+	
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC">
@@ -35,6 +43,8 @@
 		</environment>
 	</environments>
 
+
+	
 	<mappers>
 		<mapper class="org.apache.ibatis.submitted.basetest.Mapper" />
 	</mappers>
